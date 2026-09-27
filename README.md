@@ -1,46 +1,33 @@
-<h1 align="center" style="position: relative;">
-  <br>
-    <img src="./assets/shoppy-x-ray.svg" alt="logo" width="200">
-  <br>
-  Shopify Skeleton Theme
+<h1 align="center">
+  Séance Matcha
 </h1>
 
-A minimal, carefully structured Shopify theme designed to help you quickly get started. Designed with modularity, maintainability, and Shopify's best practices in mind.
-
 <p align="center">
-  <a href="./LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
-  <a href="./actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Shopify/skeleton-theme/actions/workflows/ci.yml/badge.svg"></a>
+  A custom Shopify Online Store 2.0 theme for a premium matcha brand.
 </p>
 
-## Getting started
+<p align="center">
+  <strong>🎓 Official class project for <a href="https://skl.sh/4AvYQSd">Shopify Web Design — Plan, Design and Build a Shopify Storefront with AI</a> on Skillshare</strong>
+</p>
 
-### Prerequisites
+## About this project
 
-Before starting, ensure you have the latest Shopify CLI installed:
+Séance Matcha is a fictional premium matcha brand, and this repository is the custom Shopify theme built for it as the class project for the Skillshare course [Shopify Web Design — Plan, Design and Build a Shopify Storefront with AI](https://skl.sh/4AvYQSd). It follows the class's core workflow end to end:
 
-- [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) – helps you download, upload, preview themes, and streamline your workflows
+1. **Plan** — a spec sheet defines behavior, data sources, and content structure for each page.
+2. **Design** — a full visual design is created in Figma, section by section.
+3. **Build** — the theme is implemented in code from the Figma design and spec sheet, using [Claude Code](https://claude.com/claude-code) as an AI pair-programmer for the Liquid/CSS/JS implementation, with the Figma design and spec sheet as the source of truth throughout.
 
-If you use VS Code:
+The theme is built on Shopify's [Skeleton Theme](https://github.com/Shopify/skeleton-theme) scaffold and extended into a fully custom storefront: a real home page, product and collection pages, cart, search, and contact experience — not just a component demo.
 
-- [Shopify Liquid VS Code Extension](https://shopify.dev/docs/storefronts/themes/tools/shopify-liquid-vscode) – provides syntax highlighting, linting, inline documentation, and auto-completion specifically designed for Liquid templates
+## Highlights
 
-### Clone
-
-Clone this repository using Git or Shopify CLI:
-
-```bash
-git clone git@github.com:Shopify/skeleton-theme.git
-# or
-shopify theme init
-```
-
-### Preview
-
-Preview this theme using Shopify CLI:
-
-```bash
-shopify theme dev
-```
+- **AJAX cart drawer** — built on the native `<dialog>` element, driven by Shopify's Cart AJAX API (`sections` parameter on `/cart/add.js` and `/cart/change.js`), so adding or updating items updates the drawer, the header badge, and the cart page without a full reload.
+- **Animated navigation, search, and cart UI** — the mobile nav drawer, cart drawer, and inline header search all slide/expand open and closed with real CSS transitions (not just show/hide), including a scrollbar-gutter fix to keep the animation jitter-free.
+- **Header overlay treatment** — the header floats, transparent, over the hero section on the homepage and over the banner on collection pages, matching the Figma design's layered layout.
+- **Responsive, full-bleed section layout** — every section opts into Shopify's `full-width` grid utility so backgrounds and images run edge-to-edge instead of sitting in a centered content column.
+- **No bundled placeholder images** — all imagery comes from real store data (products, collections, theme settings) or from Shopify's `placeholder_svg_tag` when content hasn't been added yet, rather than shipping fake photos inside the theme package.
+- **Color-inversion hover states** — buttons and links invert foreground/background color on hover instead of just fading opacity, for a crisper, more intentional interaction feel.
 
 ## Theme architecture
 
@@ -56,105 +43,33 @@ shopify theme dev
 └── templates       # Templates combining sections to define page structures
 ```
 
-To learn more, refer to the [theme architecture documentation](https://shopify.dev/docs/storefronts/themes/architecture).
+To learn more about this architecture, refer to Shopify's [theme architecture documentation](https://shopify.dev/docs/storefronts/themes/architecture).
 
-### Templates
+## Getting started
 
-[Templates](https://shopify.dev/docs/storefronts/themes/architecture/templates#template-types) control what's rendered on each type of page in a theme.
+### Prerequisites
 
-The Skeleton Theme scaffolds [JSON templates](https://shopify.dev/docs/storefronts/themes/architecture/templates/json-templates) to make it easy for merchants to customize their store.
+- [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) — to preview, develop, and push the theme
+- A Shopify store to preview it on (a free [development store](https://shopify.dev/docs/api/development-stores) works)
 
-None of the template types are required, and not all of them are included in the Skeleton Theme. Refer to the [template types reference](https://shopify.dev/docs/storefronts/themes/architecture/templates#template-types) for a full list.
+If you use VS Code:
 
-### Sections
+- [Shopify Liquid VS Code Extension](https://shopify.dev/docs/storefronts/themes/tools/shopify-liquid-vscode) — syntax highlighting, linting, and autocompletion for Liquid
 
-[Sections](https://shopify.dev/docs/storefronts/themes/architecture/sections) are Liquid files that allow you to create reusable modules of content that can be customized by merchants. They can also include blocks which allow merchants to add, remove, and reorder content within a section.
+### Clone
 
-Sections are made customizable by including a `{% schema %}` in the body. For more information, refer to the [section schema documentation](https://shopify.dev/docs/storefronts/themes/architecture/sections/section-schema).
+```bash
+git clone https://github.com/christopherdodd/seance-matcha-custom-shopify-theme.git
+```
 
-### Blocks
+### Preview
 
-[Blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks) let developers create flexible layouts by breaking down sections into smaller, reusable pieces of Liquid. Each block has its own set of settings, and can be added, removed, and reordered within a section.
+```bash
+shopify theme dev --store your-store.myshopify.com
+```
 
-Blocks are made customizable by including a `{% schema %}` in the body. For more information, refer to the [block schema documentation](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/schema).
+> Note: this theme's `config/settings_data.json` and `templates/*.json` hold this project's own store content (images, copy, selected collections). Pulling/pushing those files will overwrite whatever content exists on the store you're previewing against — see `HANDOFF.md` in this repo for the full notes on that if you're picking this project up as-is.
 
-## Schemas
+## Class
 
-When developing components defined by schema settings, we recommend these guidelines to simplify your code:
-
-- **Single property settings**: For settings that correspond to a single CSS property, use CSS variables:
-
-  ```liquid
-  <div class="collection" style="--gap: {{ block.settings.gap }}px">
-    ...
-  </div>
-
-  {% stylesheet %}
-    .collection {
-      gap: var(--gap);
-    }
-  {% endstylesheet %}
-
-  {% schema %}
-  {
-    "settings": [{
-      "type": "range",
-      "label": "gap",
-      "id": "gap",
-      "min": 0,
-      "max": 100,
-      "unit": "px",
-      "default": 0,
-    }]
-  }
-  {% endschema %}
-  ```
-
-- **Multiple property settings**: For settings that control multiple CSS properties, use CSS classes:
-
-  ```liquid
-  <div class="collection {{ block.settings.layout }}">
-    ...
-  </div>
-
-  {% stylesheet %}
-    .collection--full-width {
-      /* multiple styles */
-    }
-    .collection--narrow {
-      /* multiple styles */
-    }
-  {% endstylesheet %}
-
-  {% schema %}
-  {
-    "settings": [{
-      "type": "select",
-      "id": "layout",
-      "label": "layout",
-      "values": [
-        { "value": "collection--full-width", "label": "t:options.full" },
-        { "value": "collection--narrow", "label": "t:options.narrow" }
-      ]
-    }]
-  }
-  {% endschema %}
-  ```
-
-## CSS & JavaScript
-
-For CSS and JavaScript, we recommend using the [`{% stylesheet %}`](https://shopify.dev/docs/api/liquid/tags#stylesheet) and [`{% javascript %}`](https://shopify.dev/docs/api/liquid/tags/javascript) tags. They can be included multiple times, but the code will only appear once.
-
-### `critical.css`
-
-The Skeleton Theme explicitly separates essential CSS necessary for every page into a dedicated `critical.css` file.
-
-## Contributing
-
-We're excited for your contributions to the Skeleton Theme! This repository aims to remain as lean, lightweight, and fundamental as possible, and we kindly ask your contributions to align with this intention.
-
-Visit our [CONTRIBUTING.md](./CONTRIBUTING.md) for a detailed overview of our process, guidelines, and recommendations.
-
-## License
-
-Skeleton Theme is open-sourced under the [MIT](./LICENSE.md) License.
+This project was built as part of [Shopify Web Design — Plan, Design and Build a Shopify Storefront with AI](https://skl.sh/4AvYQSd) on Skillshare — a course on planning, designing, and building a real Shopify storefront using AI tools throughout the workflow.
