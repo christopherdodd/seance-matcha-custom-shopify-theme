@@ -1,0 +1,120 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "image": "shopify://shop_images/SEANCE_Lifestyle_Hero_Section_0ff93aeb-6ae4-43c0-a348-0726b2eb4812.png",
+        "heading": "Premium matcha for the modern wellness lifestyle",
+        "subheading": "Crafted for quality and purity. Our matcha brings nature's goodness to your table, perfect for mindful moments and shared experiences.",
+        "button_label": "Shop Now",
+        "button_link": "/collections/all"
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Our Product Range",
+        "collection": "shop-all",
+        "products_to_show": 4
+      }
+    },
+    "selling-points": {
+      "type": "selling-points",
+      "blocks": {
+        "radical-defence": {
+          "type": "point",
+          "settings": {
+            "icon": "shopify://shop_images/Antioxidant.png",
+            "title": "Radical Defence",
+            "description": "Packed with 137x more EGCG antioxidants than standard green tea to protect your cells."
+          }
+        },
+        "sustained-ritual": {
+          "type": "point",
+          "settings": {
+            "icon": "shopify://shop_images/Calm_Energy.png",
+            "title": "Sustained Ritual",
+            "description": "A calm, focused energy that lasts for hours without the jitters or the crash."
+          }
+        },
+        "metabolic-spark": {
+          "type": "point",
+          "settings": {
+            "icon": "shopify://shop_images/Metabolism.png",
+            "title": "Metabolic Spark",
+            "description": "A natural, plant-based boost to your metabolism and calorie-burning efficiency."
+          }
+        },
+        "vivid-detox": {
+          "type": "point",
+          "settings": {
+            "icon": "shopify://shop_images/Detox.png",
+            "title": "Vivid Detox",
+            "description": "Rich in shade-grown chlorophyll to help your body naturally filter and cleanse."
+          }
+        }
+      },
+      "block_order": [
+        "radical-defence",
+        "sustained-ritual",
+        "metabolic-spark",
+        "vivid-detox"
+      ],
+      "settings": {
+        "heading": "Why Séance Matcha"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "sarah": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "I've tried so many matcha brands, but SÉANCE is on another level. I drink it every morning before my 6 AM yoga class, and the energy is incredible—no jitters, just pure focus. I feel like I'm in a flow state the entire practice. Plus, knowing I'm getting all those antioxidants makes me feel like I'm actually taking care of my body from the inside out. It's become my non-negotiable morning ritual.",
+            "image": "shopify://shop_images/Customer_Testimonial_Profile_1_Yoga.jpg",
+            "name": "Sarah M."
+          }
+        },
+        "maya": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "As a pilates instructor, I'm on my feet teaching back-to-back classes all day. SÉANCE matcha gives me sustained energy without the crash I used to get from coffee. I love that it's clean, natural, and actually supports my metabolism. My clients always ask what my secret is—it's this matcha! The taste is smooth, vibrant, and honestly just makes me feel good. I'm obsessed.",
+            "image": "shopify://shop_images/Customer_Testimonial_Profile_2_Yoga.jpg",
+            "name": "Maya K."
+          }
+        },
+        "ava": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "I'm all about that wellness lifestyle, and SÉANCE fits perfectly into my routine. I blend it into my post-workout smoothies or just whisk it with oat milk for a matcha latte. The calm energy is real—I can power through my workday and still have energy for evening yoga. And the detox benefits? My skin has never looked better. This is my new holy grail.",
+            "image": "shopify://shop_images/Customer_Testimonial_Profile_3_Yoga.jpg",
+            "name": "Ava L."
+          }
+        }
+      },
+      "block_order": [
+        "sarah",
+        "maya",
+        "ava"
+      ],
+      "settings": {
+        "heading": "Why Séance Matcha?"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured-collection",
+    "selling-points",
+    "testimonials"
+  ]
+}

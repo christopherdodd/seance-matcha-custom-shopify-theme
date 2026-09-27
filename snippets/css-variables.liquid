@@ -1,0 +1,45 @@
+{% style %}
+  {% # Loads all font variantions with display: swap %}
+  {{ settings.type_primary_font | font_face: font_display: 'swap' }}
+  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {{ settings.type_primary_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {{ settings.type_heading_font | font_face: font_display: 'swap' }}
+
+  :root {
+    --font-primary--family: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
+    --font-primary--style: {{ settings.type_primary_font.style }};
+    --font-primary--weight: {{ settings.type_primary_font.weight }};
+    --font-heading--family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    --font-heading--style: {{ settings.type_heading_font.style }};
+    --font-heading--weight: {{ settings.type_heading_font.weight }};
+    --page-width: {{ settings.max_page_width }};
+    --page-margin: {{ settings.min_page_margin }}px;
+    --color-background: {{ settings.background_color }};
+    --color-foreground: {{ settings.foreground_color }};
+    --style-border-radius-inputs: {{ settings.input_corner_radius }}px;
+
+    /* Séance brand tokens */
+    --color-primary: {{ settings.color_primary }};
+    --color-on-primary: {{ settings.color_on_primary }};
+    --color-surface: {{ settings.background_color }};
+    --color-surface-bright: {{ settings.color_surface_bright }};
+    --color-surface-container-high: {{ settings.color_surface_container_high }};
+    --color-surface-container-highest: {{ settings.color_surface_container_highest }};
+    --color-on-surface: {{ settings.foreground_color }};
+    --color-on-surface-variant: {{ settings.color_on_surface_variant }};
+    --color-outline-variant: {{ settings.color_outline_variant }};
+
+    --radius-full: 9999px;
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --radius-default: 8px;
+
+    --spacing-container-padding: 24px;
+    --spacing-card-gap: 16px;
+    --spacing-gap-sm: 8px;
+
+    --shadow-card: 0px 4px 16px 0px rgba(46, 42, 31, 0.08);
+    --shadow-overlay: 0px 12px 32px 0px rgba(46, 42, 31, 0.16);
+  }
+{% endstyle %}

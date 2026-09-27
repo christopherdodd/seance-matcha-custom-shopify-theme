@@ -1,0 +1,76 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {}
+    },
+    "selling-points": {
+      "type": "selling-points",
+      "blocks": {
+        "radical-defence": {
+          "type": "point",
+          "settings": {
+            "icon": "shopify://shop_images/Antioxidant.png",
+            "title": "Radical Defence",
+            "description": "Packed with 137x more EGCG antioxidants than standard green tea to protect your cells."
+          }
+        },
+        "sustained-ritual": {
+          "type": "point",
+          "settings": {
+            "icon": "shopify://shop_images/Calm_Energy.png",
+            "title": "Sustained Ritual",
+            "description": "A calm, focused energy that lasts for hours without the jitters or the crash."
+          }
+        },
+        "metabolic-spark": {
+          "type": "point",
+          "settings": {
+            "icon": "shopify://shop_images/Metabolism.png",
+            "title": "Metabolic Spark",
+            "description": "A natural, plant-based boost to your metabolism and calorie-burning efficiency."
+          }
+        },
+        "vivid-detox": {
+          "type": "point",
+          "settings": {
+            "icon": "shopify://shop_images/Detox.png",
+            "title": "Vivid Detox",
+            "description": "Rich in shade-grown chlorophyll to help your body naturally filter and cleanse."
+          }
+        }
+      },
+      "block_order": [
+        "radical-defence",
+        "sustained-ritual",
+        "metabolic-spark",
+        "vivid-detox"
+      ],
+      "settings": {
+        "heading": "Why Séance Matcha"
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Related Products",
+        "collection": "shop-all",
+        "products_to_show": 3
+      }
+    }
+  },
+  "order": [
+    "main",
+    "selling-points",
+    "featured-collection"
+  ]
+}

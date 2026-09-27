@@ -1,0 +1,140 @@
+<collection-sort class="main-collection full-width" data-section-id="{{ section.id }}" data-url="{{ collection.url }}">
+  <div class="main-collection__container">
+    <div class="main-collection__toolbar">
+      <p class="main-collection__count">{{ 'collections.product_count' | t: count: collection.products_count }}</p>
+
+      {% if collection.products.size > 0 %}
+        <div class="main-collection__sort">
+          <label for="collection-sort-by">{{ 'collections.sort_by' | t }}</label>
+          <select id="collection-sort-by" data-sort-select>
+            {% for option in collection.sort_options %}
+              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
+                {{ option.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      {% endif %}
+    </div>
+
+    <div id="main-collection-grid" data-grid>
+      {% if collection.products.size > 0 %}
+        {% paginate collection.products by 12 %}
+          <div class="main-collection__grid">
+            {% for product in collection.products %}
+              {% render 'product-card', product: product %}
+            {% endfor %}
+          </div>
+
+          {% if paginate.pages > 1 %}
+            <nav class="main-collection__pagination">
+              {{ paginate | default_pagination }}
+            </nav>
+          {% endif %}
+        {% endpaginate %}
+      {% else %}
+        <div class="main-collection__empty">
+          <p>{{ 'collections.no_matches' | t }}</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</collection-sort>
+
+<script src="{{ 'collection-sort.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .main-collection {
+    display: flex;
+    justify-content: center;
+    padding: 64px 24px;
+  }
+
+  .main-collection__container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: var(--page-width);
+    width: 100%;
+  }
+
+  .main-collection__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .main-collection__count {
+    font-family: var(--font-primary--family);
+    font-size: 13px;
+    color: var(--color-on-surface-variant);
+    margin: 0;
+  }
+
+  .main-collection__sort {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .main-collection__sort label {
+    font-family: var(--font-primary--family);
+    font-size: 13px;
+    color: var(--color-on-surface-variant);
+  }
+  .main-collection__sort select {
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-default);
+    padding: 8px 12px;
+    font-family: var(--font-primary--family);
+    font-size: 13px;
+    color: var(--color-on-surface);
+    background-color: var(--color-surface-bright);
+  }
+
+  .main-collection__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .main-collection__pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+  }
+  .main-collection__pagination a {
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .main-collection__pagination a:hover {
+    color: var(--color-primary);
+  }
+
+  .main-collection__empty {
+    display: flex;
+    justify-content: center;
+    padding: 64px 0;
+    font-family: var(--font-primary--family);
+    font-size: 16px;
+    color: var(--color-on-surface-variant);
+  }
+
+  .main-collection[data-loading] #main-collection-grid {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  @media screen and (max-width: 989px) {
+    .main-collection__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:general.collection",
+  "settings": []
+}
+{% endschema %}

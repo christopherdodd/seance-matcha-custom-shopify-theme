@@ -1,0 +1,193 @@
+<div class="main-search full-width">
+  <div class="main-search__container">
+    <form action="{{ routes.search_url }}" method="get" role="search" class="main-search__field">
+      {{ 'icon-search.svg' | inline_asset_content }}
+      <input
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ 'search.placeholder' | t }}"
+        aria-label="{{ 'search.title' | t }}"
+      >
+      <input type="hidden" name="type" value="product">
+    </form>
+
+    {% if search.performed %}
+      {% if search.results_count > 0 %}
+        <div class="main-search__results">
+          <p class="main-search__results-heading">{{ 'search.title' | t }}</p>
+          <div class="main-search__grid">
+            {% for item in search.results %}
+              {% if item.object_type == 'product' %}
+                {% render 'product-card', product: item %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <div class="main-search__no-results">
+          <p class="main-search__no-results-message">{{ 'search.no_results_html' | t: terms: search.terms }}</p>
+
+          {% if section.blocks.size > 0 %}
+            <p class="main-search__popular-heading">{{ section.settings.popular_heading }}</p>
+            <div class="main-search__popular-pills">
+              {% for block in section.blocks %}
+                <a href="{{ routes.search_url }}?q={{ block.settings.term | url_encode }}&type=product" class="main-search__pill" {{ block.shopify_attributes }}>
+                  {{ block.settings.term }}
+                </a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .main-search {
+    display: flex;
+    justify-content: center;
+    padding: 64px 24px;
+  }
+
+  .main-search__container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: var(--page-width);
+    width: 100%;
+  }
+
+  .main-search__field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-default);
+    background-color: var(--color-surface-bright);
+  }
+  .main-search__field svg {
+    width: 18px;
+    height: 18px;
+    color: var(--color-on-surface-variant);
+    flex-shrink: 0;
+  }
+  .main-search__field input[type='search'] {
+    flex: 1 0 0;
+    min-width: 0;
+    border: none;
+    outline: none;
+    font-family: var(--font-primary--family);
+    font-size: 14px;
+    color: var(--color-on-surface);
+  }
+  .main-search__field:focus-within {
+    border-color: var(--color-primary);
+  }
+
+  .main-search__results {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .main-search__results-heading {
+    font-family: var(--font-primary--family);
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--color-on-surface);
+    margin: 0;
+  }
+  .main-search__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .main-search__no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 33px 0;
+    text-align: center;
+  }
+  .main-search__no-results-message {
+    font-family: var(--font-primary--family);
+    font-size: 14px;
+    color: var(--color-on-surface);
+    margin: 0;
+  }
+  .main-search__popular-heading {
+    font-family: var(--font-primary--family);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--color-on-surface);
+    margin: 20px 0 0;
+  }
+  .main-search__popular-pills {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  .main-search__pill {
+    background-color: var(--color-surface-container-high);
+    border-radius: var(--radius-full);
+    padding: 9px 16px;
+    font-family: var(--font-primary--family);
+    font-size: 13px;
+    color: var(--color-on-surface);
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+  .main-search__pill:hover {
+    background-color: var(--color-surface-container-highest);
+  }
+
+  @media screen and (max-width: 989px) {
+    .main-search__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:general.search",
+  "settings": [
+    {
+      "type": "text",
+      "id": "popular_heading",
+      "label": "Popular searches heading",
+      "default": "Popular searches"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "popular_search",
+      "name": "Popular search",
+      "settings": [
+        {
+          "type": "text",
+          "id": "term",
+          "label": "Search term"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.search",
+      "blocks": [
+        { "type": "popular_search", "settings": { "term": "matcha" } },
+        { "type": "popular_search", "settings": { "term": "whisk" } },
+        { "type": "popular_search", "settings": { "term": "gift set" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

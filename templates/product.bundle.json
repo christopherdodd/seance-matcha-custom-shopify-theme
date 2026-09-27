@@ -1,0 +1,101 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {}
+    },
+    "whats-included": {
+      "type": "whats-included",
+      "blocks": {
+        "powder": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/SEANCEMatchaPowder1x1.png",
+            "title": "Premium Matcha Powder 100g",
+            "description": "<ul><li>Premium ceremonial grade matcha powder</li><li>100g (3.5oz) jar</li><li>Organic and sustainably sourced</li><li>Rich, vibrant green color</li><li>Smooth, velvety texture</li><li>Perfect for daily wellness rituals</li></ul>"
+          }
+        },
+        "whisk": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/SEANCEMatchaWhisk1x1.png",
+            "title": "Elegant Matcha Whisk Handcrafted Bamboo",
+            "description": "<p>Handcrafted with premium bamboo bristles and a wooden handle, our matcha whisk brings traditional Japanese craftsmanship to your daily ritual.</p>"
+          }
+        },
+        "bowl": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/SEANCEMatchaBowl1x1.jpg",
+            "title": "Premium Matcha Bowl Ceramic",
+            "description": "<p>Beautiful ceramic matcha bowl with a minimalist design, perfect for creating your daily matcha ritual in style.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "powder",
+        "whisk",
+        "bowl"
+      ],
+      "settings": {
+        "heading": "What's included"
+      }
+    },
+    "selling-points": {
+      "type": "selling-points",
+      "blocks": {
+        "radical-defence": {
+          "type": "point",
+          "settings": {
+            "title": "Radical Defence",
+            "description": "Packed with 137x more EGCG antioxidants than standard green tea to protect your cells."
+          }
+        },
+        "sustained-ritual": {
+          "type": "point",
+          "settings": {
+            "title": "Sustained Ritual",
+            "description": "A calm, focused energy that lasts for hours without the jitters or the crash."
+          }
+        },
+        "metabolic-spark": {
+          "type": "point",
+          "settings": {
+            "title": "Metabolic Spark",
+            "description": "A natural, plant-based boost to your metabolism and calorie-burning efficiency."
+          }
+        },
+        "vivid-detox": {
+          "type": "point",
+          "settings": {
+            "title": "Vivid Detox",
+            "description": "Rich in shade-grown chlorophyll to help your body naturally filter and cleanse."
+          }
+        }
+      },
+      "block_order": [
+        "radical-defence",
+        "sustained-ritual",
+        "metabolic-spark",
+        "vivid-detox"
+      ],
+      "settings": {
+        "heading": "Why Séance Matcha"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "whats-included",
+    "selling-points"
+  ]
+}

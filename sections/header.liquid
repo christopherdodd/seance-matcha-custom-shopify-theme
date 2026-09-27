@@ -1,0 +1,662 @@
+<header class="site-header full-width{% if template.name == 'index' or template.name == 'collection' %} site-header--overlay{% endif %}">
+  <div class="site-header__pill">
+    <div class="site-header__pill-row">
+      <a href="{{ routes.root_url }}" class="site-header__logo">
+        {% if section.settings.logo != blank %}
+          {{ section.settings.logo | image_url: width: 300 | image_tag: loading: 'eager', widths: '150,300', alt: shop.name }}
+        {% else %}
+          <span class="site-header__logo-text">{{ shop.name }}</span>
+        {% endif %}
+      </a>
+
+      <button type="button" class="site-header__menu-toggle" aria-haspopup="dialog" aria-controls="mobile-nav-drawer" data-drawer-open>
+        {{ 'icon-menu.svg' | inline_asset_content }}
+        <span class="visually-hidden">{{ 'general.menu' | t }}</span>
+      </button>
+
+      <nav class="site-header__nav">
+        <ul class="site-header__nav-list" role="list">
+          {% for link in section.settings.menu.links %}
+            <li class="site-header__nav-item">
+              <a href="{{ link.url }}">{{ link.title }}</a>
+              {% if link.links.size > 0 %}
+                {{ 'icon-chevron-down.svg' | inline_asset_content }}
+                <ul class="site-header__submenu" role="list">
+                  {% for child_link in link.links %}
+                    <li><a href="{{ child_link.url }}">{{ child_link.title }}</a></li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+
+      <div class="site-header__icons">
+        <button
+          type="button"
+          class="site-header__icon-button"
+          data-search-toggle
+          aria-expanded="false"
+          aria-controls="header-search-bar"
+          aria-label="{{ 'general.search' | t }}"
+        >
+          {{ 'icon-search.svg' | inline_asset_content }}
+        </button>
+
+        <a href="{{ routes.account_url }}" class="site-header__icon-button" aria-label="{{ 'general.account' | t }}">
+          {{ 'icon-account.svg' | inline_asset_content }}
+        </a>
+
+        <button
+          type="button"
+          class="site-header__icon-button site-header__cart"
+          data-cart-drawer-open
+          aria-haspopup="dialog"
+          aria-controls="cart-drawer"
+          aria-label="{{ 'general.cart' | t }}"
+        >
+          {% if cart.item_count > 0 %}
+            <sup data-cart-count>{{ cart.item_count }}</sup>
+          {% endif %}
+          {{ 'icon-cart.svg' | inline_asset_content }}
+        </button>
+      </div>
+    </div>
+
+    <div id="header-search-bar" class="header-search-bar">
+      <div class="header-search-bar__inner">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="header-search-bar__form">
+          {{ 'icon-search.svg' | inline_asset_content }}
+          <input
+            type="search"
+            name="q"
+            placeholder="{{ 'search.placeholder' | t }}"
+            aria-label="{{ 'search.title' | t }}"
+            data-search-input
+          >
+          <input type="hidden" name="type" value="product">
+          <button type="button" class="header-search-bar__close" data-search-close aria-label="{{ 'general.close' | t }}">
+            {{ 'icon-close.svg' | inline_asset_content }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+
+<dialog id="mobile-nav-drawer" class="mobile-nav-drawer" scroll-lock aria-label="{{ 'general.menu' | t }}">
+  <div class="mobile-nav-drawer__panel">
+    <div class="mobile-nav-drawer__header">
+      <button type="button" class="mobile-nav-drawer__close" data-drawer-close aria-label="{{ 'general.close' | t }}">
+        {{ 'icon-close.svg' | inline_asset_content }}
+      </button>
+    </div>
+
+    <ul class="mobile-nav-drawer__list" role="list">
+      {% for link in section.settings.menu.links %}
+        <li>
+          <a href="{{ link.url }}">{{ link.title }}</a>
+          {% if link.links.size > 0 %}
+            {{ 'icon-chevron-down.svg' | inline_asset_content }}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+
+    <hr class="mobile-nav-drawer__divider">
+
+    <ul class="mobile-nav-drawer__utility" role="list">
+      <li>
+        <a href="{{ routes.search_url }}">
+          {{ 'icon-search.svg' | inline_asset_content }}
+          {{ 'general.search' | t }}
+        </a>
+      </li>
+      <li>
+        <button type="button" data-cart-drawer-open data-drawer-close>
+          {{ 'icon-cart.svg' | inline_asset_content }}
+          {{ 'general.cart' | t }}
+        </button>
+      </li>
+      <li>
+        <a href="{{ routes.account_url }}">
+          {{ 'icon-account.svg' | inline_asset_content }}
+          {{ 'general.account' | t }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</dialog>
+
+<script>
+  (() => {
+    const navDrawer = document.getElementById('mobile-nav-drawer');
+    if (navDrawer) {
+      const navPanel = navDrawer.querySelector('.mobile-nav-drawer__panel');
+      let navPendingCloseCleanup = null;
+
+      const openNavDrawer = () => {
+        if (navPendingCloseCleanup) {
+          navPendingCloseCleanup();
+          navPendingCloseCleanup = null;
+        }
+        if (!navDrawer.open) {
+          navDrawer.showModal();
+        }
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            navDrawer.classList.add('is-open');
+          });
+        });
+      };
+
+      const closeNavDrawer = () => {
+        if (!navDrawer.open || navPendingCloseCleanup) return;
+        navDrawer.classList.remove('is-open');
+
+        const finish = () => {
+          navPanel.removeEventListener('transitionend', onTransitionEnd);
+          clearTimeout(timer);
+          navPendingCloseCleanup = null;
+          if (navDrawer.open) navDrawer.close();
+        };
+        const onTransitionEnd = (event) => {
+          if (event.target !== navPanel || event.propertyName !== 'transform') return;
+          finish();
+        };
+        const timer = setTimeout(finish, 350);
+
+        navPendingCloseCleanup = () => {
+          navPanel.removeEventListener('transitionend', onTransitionEnd);
+          clearTimeout(timer);
+        };
+        navPanel.addEventListener('transitionend', onTransitionEnd);
+      };
+
+      document.querySelectorAll('[data-drawer-open]').forEach((button) => {
+        button.addEventListener('click', openNavDrawer);
+      });
+      navDrawer.querySelectorAll('[data-drawer-close]').forEach((button) => {
+        button.addEventListener('click', closeNavDrawer);
+      });
+      navDrawer.addEventListener('click', (event) => {
+        if (event.target === navDrawer) closeNavDrawer();
+      });
+      navDrawer.addEventListener('cancel', (event) => {
+        event.preventDefault();
+        closeNavDrawer();
+      });
+    }
+
+    const searchBar = document.getElementById('header-search-bar');
+    const searchToggle = document.querySelector('[data-search-toggle]');
+    const searchInput = document.querySelector('[data-search-input]');
+    const searchClose = document.querySelector('[data-search-close]');
+
+    const isSearchOpen = () => !!searchBar && searchBar.classList.contains('is-open');
+    const closeSearch = () => {
+      if (!searchBar) return;
+      searchBar.classList.remove('is-open');
+      searchToggle?.setAttribute('aria-expanded', 'false');
+    };
+    const openSearch = () => {
+      if (!searchBar) return;
+      searchBar.classList.add('is-open');
+      searchToggle?.setAttribute('aria-expanded', 'true');
+      searchInput?.focus();
+    };
+
+    if (searchToggle && searchBar) {
+      searchToggle.addEventListener('click', () => {
+        if (isSearchOpen()) {
+          closeSearch();
+        } else {
+          openSearch();
+        }
+      });
+    }
+    searchClose?.addEventListener('click', closeSearch);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeSearch();
+    });
+    document.addEventListener('click', (event) => {
+      if (!isSearchOpen()) return;
+      if (searchBar.contains(event.target) || searchToggle?.contains(event.target)) return;
+      closeSearch();
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .site-header {
+    position: relative;
+    padding: 16px var(--spacing-container-padding);
+    z-index: 10;
+  }
+  .site-header--overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+  }
+
+  .site-header__pill {
+    background-color: var(--color-surface-bright);
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-full);
+    max-width: var(--page-width);
+    margin: 0 auto;
+    position: relative;
+    transition: border-radius 0.2s ease;
+  }
+  @media screen and (min-width: 990px) {
+    .site-header__pill:has(.header-search-bar.is-open) {
+      /* 32px = half of .site-header__pill-row's 64px height, matching the
+         capsule-cap curve --radius-full already clamps to when closed.
+         Using --radius-full here would let the corners balloon past that on
+         the now-taller box, so all four corners are pinned to the same
+         explicit value instead. */
+      border-radius: 32px;
+    }
+  }
+
+  .site-header__pill-row {
+    display: flex;
+    align-items: center;
+    height: 64px;
+    padding: 0 var(--spacing-container-padding);
+    position: relative;
+  }
+
+  .site-header__logo {
+    display: flex;
+    align-items: center;
+    flex: 1 0 0;
+    min-width: 0;
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+  .site-header__logo:hover {
+    opacity: 0.75;
+  }
+  .site-header__logo img {
+    width: auto;
+    height: 30px;
+  }
+  .site-header__logo-text {
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    font-size: 20px;
+    color: var(--color-on-surface);
+  }
+
+  .site-header__menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--color-on-surface-variant);
+    transition: color 0.15s ease;
+  }
+  .site-header__menu-toggle:hover {
+    color: var(--color-on-surface);
+  }
+  .site-header__menu-toggle svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .site-header__nav {
+    flex: 1 0 0;
+    display: flex;
+    justify-content: center;
+  }
+  .site-header__nav-list {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .site-header__nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .site-header__nav-item > a {
+    font-family: var(--font-primary--family);
+    font-size: 14px;
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .site-header__nav-item > a:hover {
+    color: var(--color-on-surface);
+  }
+  .site-header__nav-item svg {
+    width: 10px;
+    height: 10px;
+    color: var(--color-on-surface-variant);
+  }
+  .site-header__submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--color-surface-bright);
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-default);
+    list-style: none;
+    padding: 8px 0;
+    margin-top: 8px;
+    min-width: 180px;
+    box-shadow: var(--shadow-card);
+    z-index: 10;
+  }
+  .site-header__nav-item:hover .site-header__submenu,
+  .site-header__nav-item:focus-within .site-header__submenu {
+    display: block;
+  }
+  .site-header__submenu a {
+    display: block;
+    padding: 8px 16px;
+    font-family: var(--font-primary--family);
+    font-size: 14px;
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+  }
+  .site-header__submenu a:hover {
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+  }
+
+  .site-header__icons {
+    flex: 1 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+  }
+  .site-header__icon-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+  .site-header__icon-button:hover {
+    color: var(--color-on-surface);
+  }
+  .site-header__icon-button svg {
+    width: 20px;
+    height: 20px;
+  }
+  .site-header__cart sup {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    font-size: 10px;
+    line-height: 1;
+    border-radius: var(--radius-full);
+    padding: 2px 5px;
+  }
+
+  .header-search-bar {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+  .header-search-bar.is-open {
+    grid-template-rows: 1fr;
+  }
+  .header-search-bar__inner {
+    display: flex;
+    justify-content: center;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0 var(--spacing-container-padding);
+    visibility: hidden;
+    transition: visibility 0s linear 0.3s;
+  }
+  .header-search-bar.is-open .header-search-bar__inner {
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  .header-search-bar__form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: var(--page-width);
+    height: 48px;
+    margin-bottom: 16px;
+  }
+  .header-search-bar__form svg:first-child {
+    width: 18px;
+    height: 18px;
+    color: var(--color-on-surface-variant);
+    flex-shrink: 0;
+  }
+  .header-search-bar__form input[type='search'] {
+    flex: 1 0 0;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font-primary--family);
+    font-size: 14px;
+    color: var(--color-on-surface);
+  }
+  .header-search-bar__close {
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    color: var(--color-on-surface-variant);
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+  .header-search-bar__close:hover {
+    color: var(--color-on-surface);
+  }
+  .header-search-bar__close svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .mobile-nav-drawer {
+    border: none;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+    max-height: none;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
+  .mobile-nav-drawer::backdrop {
+    background-color: rgba(46, 42, 31, 0.4);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .mobile-nav-drawer.is-open::backdrop {
+    opacity: 1;
+  }
+  .mobile-nav-drawer__panel {
+    background-color: var(--color-surface-bright);
+    width: 300px;
+    height: 100%;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    border-radius: 0 20px 20px 0;
+    box-shadow: var(--shadow-overlay);
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  .mobile-nav-drawer.is-open .mobile-nav-drawer__panel {
+    transform: translateX(0);
+  }
+  .mobile-nav-drawer__header {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .mobile-nav-drawer__close {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--color-on-surface-variant);
+    transition: color 0.15s ease;
+  }
+  .mobile-nav-drawer__close:hover {
+    color: var(--color-on-surface);
+  }
+  .mobile-nav-drawer__close svg {
+    width: 18px;
+    height: 18px;
+  }
+  .mobile-nav-drawer__list,
+  .mobile-nav-drawer__utility {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .mobile-nav-drawer__list {
+    gap: 20px;
+  }
+  .mobile-nav-drawer__list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mobile-nav-drawer__list a {
+    font-family: var(--font-primary--family);
+    font-size: 16px;
+    color: var(--color-on-surface);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .mobile-nav-drawer__list a:hover {
+    color: var(--color-primary);
+  }
+  .mobile-nav-drawer__list svg {
+    width: 12px;
+    height: 12px;
+    color: var(--color-on-surface-variant);
+  }
+  .mobile-nav-drawer__divider {
+    border: none;
+    border-top: 1px solid var(--color-outline-variant);
+    margin: 0;
+  }
+  .mobile-nav-drawer__utility {
+    gap: 18px;
+  }
+  .mobile-nav-drawer__utility a,
+  .mobile-nav-drawer__utility button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-primary--family);
+    font-size: 14px;
+    color: var(--color-on-surface);
+    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+  .mobile-nav-drawer__utility a:hover,
+  .mobile-nav-drawer__utility button:hover {
+    color: var(--color-primary);
+  }
+  .mobile-nav-drawer__utility svg {
+    width: 18px;
+    height: 18px;
+    color: var(--color-on-surface-variant);
+  }
+
+  @media screen and (max-width: 989px) {
+    .site-header {
+      padding: 0;
+    }
+    .site-header__pill {
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      border-top: none;
+      max-width: none;
+    }
+    .site-header__pill-row {
+      height: 60px;
+      padding: 0 16px;
+      justify-content: space-between;
+    }
+    .site-header__menu-toggle {
+      display: flex;
+    }
+    .site-header__nav {
+      display: none;
+    }
+    .site-header__logo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      flex: 0 0 auto;
+      width: auto;
+    }
+    .site-header__icons {
+      flex: 0 0 auto;
+      gap: 14px;
+    }
+    .site-header__icon-button svg {
+      width: 18px;
+      height: 18px;
+    }
+    .header-search-bar__inner {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:general.header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:labels.menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

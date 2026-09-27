@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-search",
+      "blocks": {
+        "matcha": {
+          "type": "popular_search",
+          "settings": { "term": "matcha" }
+        },
+        "whisk": {
+          "type": "popular_search",
+          "settings": { "term": "whisk" }
+        },
+        "gift-set": {
+          "type": "popular_search",
+          "settings": { "term": "gift set" }
+        }
+      },
+      "block_order": ["matcha", "whisk", "gift-set"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

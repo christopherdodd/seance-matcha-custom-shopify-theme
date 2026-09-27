@@ -1,0 +1,76 @@
+<div class="main-page full-width">
+  <div class="main-page__container">
+    <h1 class="main-page__heading">{{ page.title }}</h1>
+    <div class="main-page__content">
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .main-page {
+    display: flex;
+    justify-content: center;
+    padding: 64px 24px;
+  }
+
+  .main-page__container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+    max-width: var(--page-width);
+    width: 100%;
+  }
+
+  .main-page__heading {
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    font-size: 36px;
+    line-height: 44px;
+    letter-spacing: 0.02em;
+    color: var(--color-on-surface);
+    margin: 0;
+  }
+
+  .main-page__content {
+    font-family: var(--font-primary--family);
+    font-size: 16px;
+    line-height: 26px;
+    color: var(--color-on-surface-variant);
+    max-width: 800px;
+  }
+  .main-page__content :is(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--font-primary--family);
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 26px;
+    color: var(--color-on-surface);
+  }
+  .main-page__content img {
+    border-radius: var(--radius-lg);
+    width: 100%;
+    height: auto;
+    margin: 8px 0;
+  }
+  .main-page__content ul,
+  .main-page__content ol {
+    padding-left: 24px;
+  }
+  .main-page__content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.15s ease;
+  }
+  .main-page__content a:hover {
+    color: var(--color-on-surface);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:general.page",
+  "settings": []
+}
+{% endschema %}

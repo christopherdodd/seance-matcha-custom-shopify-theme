@@ -1,0 +1,32 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "t:general.footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "logo": "shopify://shop_images/logo.png",
+        "tagline": "Premium matcha for the modern day woman",
+        "menu": "footer",
+        "menu_title": "Shop",
+        "newsletter_title": "Stay in the loop",
+        "social_title": "Follow us",
+        "instagram_url": "https://instagram.com",
+        "facebook_url": "https://facebook.com",
+        "tiktok_url": "https://tiktok.com"
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

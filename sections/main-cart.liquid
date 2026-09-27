@@ -1,0 +1,177 @@
+<cart-items class="main-cart full-width" data-change-url="{{ routes.cart_change_url }}.js" data-shop-currency="{{ cart.currency.iso_code }}">
+  <div class="main-cart__container">
+    <h1 class="main-cart__heading">{{ 'cart.title' | t }}</h1>
+
+    {% if cart.item_count > 0 %}
+      <div class="main-cart__layout">
+        <ul class="main-cart__lines" role="list">
+          {% for line_item in cart.items %}
+            {% render 'cart-line-item', line_item: line_item %}
+          {% endfor %}
+        </ul>
+
+        <div class="main-cart__summary">
+          <div class="main-cart__subtotal">
+            <p>{{ 'cart.subtotal' | t }}</p>
+            <p data-cart-subtotal>{{ cart.total_price | money }}</p>
+          </div>
+          <a href="{{ routes.cart_url }}/checkout" class="main-cart__checkout">
+            {{ 'cart.checkout' | t }}
+          </a>
+        </div>
+      </div>
+    {% else %}
+      <div class="main-cart__empty">
+        <p>{{ 'cart.empty' | t }}</p>
+        <a href="{{ routes.all_products_collection_url }}" class="main-cart__continue">
+          {{ 'cart.continue_shopping' | t }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</cart-items>
+
+<script src="{{ 'cart-items.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .main-cart {
+    display: flex;
+    justify-content: center;
+    padding: 64px 24px;
+  }
+
+  .main-cart__container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: var(--page-width);
+    width: 100%;
+  }
+
+  .main-cart__heading {
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    font-size: 36px;
+    line-height: 44px;
+    letter-spacing: 0.02em;
+    color: var(--color-on-surface);
+    margin: 0;
+  }
+
+  .main-cart__layout {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+  }
+
+  .main-cart__lines {
+    flex: 1 0 0;
+    min-width: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .main-cart__summary {
+    flex: 0 0 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .main-cart__subtotal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-primary--family);
+    font-size: 14px;
+    color: var(--color-on-surface);
+  }
+  .main-cart__subtotal p:last-child {
+    font-weight: 600;
+  }
+  .main-cart__checkout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-full);
+    padding: 13px 24px;
+    font-family: var(--font-primary--family);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .main-cart__checkout:hover {
+    background-color: var(--color-on-primary);
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .main-cart__empty {
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-md);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .main-cart__empty p {
+    font-family: var(--font-primary--family);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--color-on-surface);
+    margin: 0;
+  }
+  .main-cart__continue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-full);
+    padding: 13px 24px;
+    font-family: var(--font-primary--family);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .main-cart__continue:hover {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    border-color: var(--color-primary);
+  }
+
+  .main-cart[data-loading] .main-cart__lines {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  @media screen and (max-width: 989px) {
+    .main-cart__layout {
+      flex-direction: column;
+    }
+    .main-cart__summary {
+      flex: 1 1 auto;
+      width: 100%;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:general.cart",
+  "settings": []
+}
+{% endschema %}

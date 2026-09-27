@@ -1,0 +1,165 @@
+<div class="whats-included full-width">
+  <div class="whats-included__container">
+    {% if section.settings.heading != blank %}
+      <h2 class="whats-included__heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="whats-included__cards">
+        {% for block in section.blocks %}
+          <div class="whats-included__card" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              {{
+                block.settings.image
+                | image_url: width: 678
+                | image_tag: widths: '339,678', loading: 'lazy', class: 'whats-included__image'
+              }}
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag: 'whats-included__image whats-included__image--placeholder' }}
+            {% endif %}
+            {% if block.settings.title != blank %}
+              <p class="whats-included__title">{{ block.settings.title }}</p>
+            {% endif %}
+            {% if block.settings.description != blank %}
+              <div class="whats-included__description">{{ block.settings.description }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .whats-included {
+    background-color: var(--color-on-primary);
+    display: flex;
+    justify-content: center;
+    padding: 64px 24px;
+  }
+
+  .whats-included__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    max-width: var(--page-width);
+    width: 100%;
+  }
+
+  .whats-included__heading {
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    font-size: 36px;
+    line-height: 44px;
+    letter-spacing: 0.02em;
+    color: var(--color-on-surface);
+    margin: 0;
+    text-align: center;
+  }
+
+  .whats-included__cards {
+    display: flex;
+    gap: 32px;
+    width: 100%;
+    background-color: var(--color-surface-bright);
+    box-shadow: var(--shadow-card);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-card-gap);
+  }
+
+  .whats-included__card {
+    flex: 1 0 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .whats-included__image {
+    width: 100%;
+    aspect-ratio: 339 / 367;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+  }
+  .whats-included__image--placeholder {
+    color: var(--color-outline-variant);
+  }
+
+  .whats-included__title {
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    font-size: 24px;
+    line-height: 36px;
+    letter-spacing: 0.02em;
+    color: var(--color-on-surface);
+    margin: 0;
+  }
+
+  .whats-included__description {
+    font-family: var(--font-primary--family);
+    font-size: 16px;
+    line-height: normal;
+    color: var(--color-on-surface);
+  }
+  .whats-included__description ul {
+    padding-left: 24px;
+    margin: 0;
+  }
+  .whats-included__description p {
+    margin: 0;
+  }
+
+  @media screen and (max-width: 989px) {
+    .whats-included__cards {
+      flex-direction: column;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "What's included",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What's included"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "What's included",
+      "blocks": [
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" }
+      ]
+    }
+  ]
+}
+{% endschema %}

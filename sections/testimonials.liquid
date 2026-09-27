@@ -1,0 +1,172 @@
+<div class="testimonials full-width">
+  {% if section.settings.heading != blank %}
+    <h2 class="testimonials__heading">{{ section.settings.heading }}</h2>
+  {% endif %}
+
+  {% if section.blocks.size > 0 %}
+    <div class="testimonials__container">
+      <div class="testimonials__row">
+        {% for block in section.blocks %}
+          <div class="testimonial-card" {{ block.shopify_attributes }}>
+            {% if block.settings.quote != blank %}
+              <p class="testimonial-card__quote">&ldquo;{{ block.settings.quote }}&rdquo;</p>
+            {% endif %}
+            {% if block.settings.image != blank %}
+              {{ block.settings.image | image_url: width: 300 | image_tag: widths: '150,300', loading: 'lazy', class: 'testimonial-card__image' }}
+            {% else %}
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'testimonial-card__image testimonial-card__image--placeholder' }}
+            {% endif %}
+            {% if block.settings.name != blank %}
+              <p class="testimonial-card__name">{{ block.settings.name }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .testimonials {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+    padding: 64px 24px;
+  }
+
+  .testimonials__heading {
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    font-size: 36px;
+    line-height: 44px;
+    letter-spacing: 0.02em;
+    color: var(--color-on-surface);
+    margin: 0;
+    text-align: center;
+  }
+
+  .testimonials__container {
+    max-width: var(--page-width);
+    width: 100%;
+  }
+
+  .testimonials__row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+  }
+
+  .testimonial-card {
+    background-color: var(--color-surface-bright);
+    border-radius: var(--radius-default);
+    padding: var(--spacing-container-padding);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    min-width: 300px;
+    flex: 1 0 0;
+  }
+
+  .testimonial-card__quote {
+    font-family: var(--font-primary--family);
+    font-size: 13px;
+    color: var(--color-on-surface);
+    margin: 0;
+  }
+
+  .testimonial-card__image {
+    width: 150px;
+    height: 150px;
+    border-radius: var(--radius-default);
+    object-fit: cover;
+  }
+  .testimonial-card__image--placeholder {
+    color: var(--color-outline-variant);
+  }
+
+  .testimonial-card__name {
+    font-family: var(--font-primary--family);
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--color-on-surface-variant);
+    margin: 0;
+  }
+
+  @media screen and (max-width: 989px) {
+    .testimonials__row {
+      flex-direction: column;
+      align-items: center;
+    }
+    .testimonial-card {
+      width: 100%;
+      max-width: 343px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Séance Matcha?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "I've tried so many matcha brands, but SÉANCE is on another level. I drink it every morning before my 6 AM yoga class, and the energy is incredible—no jitters, just pure focus. I feel like I'm in a flow state the entire practice. Plus, knowing I'm getting all those antioxidants makes me feel like I'm actually taking care of my body from the inside out. It's become my non-negotiable morning ritual.",
+            "name": "Sarah M."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "As a pilates instructor, I'm on my feet teaching back-to-back classes all day. SÉANCE matcha gives me sustained energy without the crash I used to get from coffee. I love that it's clean, natural, and actually supports my metabolism. My clients always ask what my secret is—it's this matcha! The taste is smooth, vibrant, and honestly just makes me feel good. I'm obsessed.",
+            "name": "Maya K."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "I'm all about that wellness lifestyle, and SÉANCE fits perfectly into my routine. I blend it into my post-workout smoothies or just whisk it with oat milk for a matcha latte. The calm energy is real—I can power through my workday and still have energy for evening yoga. And the detox benefits? My skin has never looked better. This is my new holy grail.",
+            "name": "Ava L."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

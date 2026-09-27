@@ -1,0 +1,253 @@
+<footer class="site-footer full-width">
+  <div class="site-footer__row">
+    <div class="site-footer__brand">
+      {% if section.settings.logo != blank %}
+        {{ section.settings.logo | image_url: width: 300 | image_tag: widths: '150,300', alt: shop.name }}
+      {% else %}
+        <p class="site-footer__brand-name">{{ shop.name }}</p>
+      {% endif %}
+      {% if section.settings.tagline != blank %}
+        <p class="site-footer__tagline">{{ section.settings.tagline }}</p>
+      {% endif %}
+    </div>
+
+    <div class="site-footer__links">
+      {% if section.settings.menu != blank %}
+        <p class="site-footer__heading">{{ section.settings.menu_title }}</p>
+        {% for link in section.settings.menu.links %}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <div class="site-footer__newsletter">
+      <p class="site-footer__heading">{{ section.settings.newsletter_title }}</p>
+      {% form 'customer', id: 'footer-newsletter', class: 'site-footer__newsletter-form' %}
+        {% if form.posted_successfully? %}
+          <p class="site-footer__newsletter-success">{{ 'general.newsletter_success' | t }}</p>
+        {% endif %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input
+          type="email"
+          name="contact[email]"
+          class="site-footer__newsletter-input"
+          placeholder="{{ 'general.newsletter_placeholder' | t }}"
+          required
+        >
+      {% endform %}
+    </div>
+
+    <div class="site-footer__social">
+      <p class="site-footer__heading">{{ section.settings.social_title }}</p>
+      <div class="site-footer__social-icons">
+        {% if section.settings.instagram_url != blank %}
+          <a href="{{ section.settings.instagram_url }}" aria-label="Instagram">{{ 'icon-instagram.svg' | inline_asset_content }}</a>
+        {% endif %}
+        {% if section.settings.facebook_url != blank %}
+          <a href="{{ section.settings.facebook_url }}" aria-label="Facebook">{{ 'icon-facebook.svg' | inline_asset_content }}</a>
+        {% endif %}
+        {% if section.settings.tiktok_url != blank %}
+          <a href="{{ section.settings.tiktok_url }}" aria-label="TikTok">{{ 'icon-tiktok.svg' | inline_asset_content }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <hr class="site-footer__divider">
+
+  <p class="site-footer__copyright">
+    &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'general.all_rights_reserved' | t }}
+  </p>
+</footer>
+
+{% stylesheet %}
+  .site-footer {
+    background-color: var(--color-surface-container-high);
+    padding: 56px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .site-footer__row {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    max-width: var(--page-width);
+    width: 100%;
+    margin: 0 auto;
+  }
+  .site-footer__brand,
+  .site-footer__links,
+  .site-footer__newsletter,
+  .site-footer__social {
+    flex: 1 0 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .site-footer__brand img {
+    height: 42px;
+    width: auto;
+    align-self: flex-start;
+  }
+  .site-footer__brand-name {
+    font-family: var(--font-heading--family);
+    font-size: 20px;
+    color: var(--color-on-surface);
+  }
+  .site-footer__tagline {
+    font-family: var(--font-primary--family);
+    font-size: 12px;
+    color: var(--color-on-surface-variant);
+  }
+  .site-footer__heading {
+    font-family: var(--font-primary--family);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+  }
+  .site-footer__links a {
+    font-family: var(--font-primary--family);
+    font-size: 13px;
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .site-footer__links a:hover {
+    color: var(--color-on-surface);
+    text-decoration: underline;
+  }
+  .site-footer__newsletter-form {
+    display: contents;
+  }
+  .site-footer__newsletter-input {
+    background-color: var(--color-surface-bright);
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    font-family: var(--font-primary--family);
+    font-size: 12px;
+    color: var(--color-on-surface-variant);
+    width: 100%;
+  }
+  .site-footer__newsletter-input:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  .site-footer__newsletter-success {
+    font-family: var(--font-primary--family);
+    font-size: 12px;
+    color: var(--color-primary);
+  }
+  .site-footer__social-icons {
+    display: flex;
+    gap: 10px;
+  }
+  .site-footer__social-icons a {
+    color: var(--color-on-surface);
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 50%;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .site-footer__social-icons a:hover {
+    background-color: var(--color-on-surface);
+    color: var(--color-surface-bright);
+  }
+  .site-footer__social-icons svg {
+    width: 28px;
+    height: 28px;
+  }
+  .site-footer__divider {
+    border: none;
+    border-top: 1px solid var(--color-outline-variant);
+    max-width: var(--page-width);
+    width: calc(100% - 64px);
+    margin: 0 auto;
+  }
+  .site-footer__copyright {
+    font-family: var(--font-primary--family);
+    font-size: 12px;
+    color: var(--color-on-surface-variant);
+    max-width: var(--page-width);
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  @media screen and (max-width: 749px) {
+    .site-footer__row {
+      flex-wrap: wrap;
+      gap: 32px 16px;
+    }
+    .site-footer__brand,
+    .site-footer__links,
+    .site-footer__newsletter,
+    .site-footer__social {
+      flex: 1 1 40%;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:general.footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Premium matcha for the modern day woman"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:labels.menu",
+      "default": "footer"
+    },
+    {
+      "type": "text",
+      "id": "menu_title",
+      "label": "Menu heading",
+      "default": "Shop"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Newsletter heading",
+      "default": "Stay in the loop"
+    },
+    {
+      "type": "text",
+      "id": "social_title",
+      "label": "Social heading",
+      "default": "Follow us"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    }
+  ]
+}
+{% endschema %}

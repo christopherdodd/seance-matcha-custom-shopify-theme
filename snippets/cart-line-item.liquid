@@ -1,0 +1,39 @@
+{% doc %}
+  Renders a single cart line item row with quantity controls and a remove button.
+
+  @param line_item {line_item} - the cart line item to render
+{% enddoc %}
+
+<li class="cart-line" data-line-item data-line-key="{{ line_item.key }}">
+  <a href="{{ line_item.url }}" class="cart-line__image">
+    {% if line_item.image %}
+      {{ line_item.image | image_url: width: 192 | image_tag: widths: '96,192', alt: line_item.title, loading: 'lazy' }}
+    {% endif %}
+  </a>
+
+  <div class="cart-line__details">
+    <a href="{{ line_item.url }}" class="cart-line__title">{{ line_item.product.title }}</a>
+    <p class="cart-line__price" data-line-price>{{ line_item.original_price | money }}</p>
+
+    <div class="cart-line__controls">
+      <div class="cart-line__quantity">
+        <button type="button" data-quantity-decrease aria-label="{{ 'products.decrease_quantity' | t }}">
+          {{ 'icon-minus.svg' | inline_asset_content }}
+        </button>
+        <input
+          type="number"
+          value="{{ line_item.quantity }}"
+          min="0"
+          data-quantity-input
+          aria-label="{{ 'cart.quantity' | t }}"
+        >
+        <button type="button" data-quantity-increase aria-label="{{ 'products.increase_quantity' | t }}">
+          {{ 'icon-plus.svg' | inline_asset_content }}
+        </button>
+      </div>
+      <button type="button" class="cart-line__remove" data-remove-line aria-label="{{ 'cart.remove' | t }}">
+        {{ 'icon-trash.svg' | inline_asset_content }}
+      </button>
+    </div>
+  </div>
+</li>
